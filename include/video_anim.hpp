@@ -49,7 +49,7 @@ namespace eg
             SDL_FillRect(surface, NULL, 0);
             
             particles_.reserve(N_);
-            auto AN = static_cast<size_t>(surface->w / 0.005) + 1;
+            auto AN = static_cast<size_t>(surface->w / 0.005);
             sine_.reserve(AN);
             cosine_.reserve(AN);
             for (auto i = 0.0, inc = 2.0 * M_PI / AN; i < 2 * M_PI; i += inc)
@@ -67,7 +67,7 @@ namespace eg
             static constexpr FP a_inc = 0.005;
             static constexpr FP a_dec = -a_inc;
             FP ac = 0.0;
-            static constexpr FP aj = 4.0 * a_inc; // 1.0 / 35.0;
+            static constexpr FP aj = 4.5 * a_inc; // 1.0 / 35.0;
 
             for (decltype(N_) i = 0; i < N_; ++i)
             {
@@ -82,7 +82,7 @@ namespace eg
 
                 a += ac;
                 auto ar = r * aj;
-
+                // std::cout << a << "\n";
                 particles_.emplace_back(particle{.r = r, .a = a + ar});
             }
 
