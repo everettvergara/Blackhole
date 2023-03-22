@@ -25,7 +25,7 @@ namespace eg
 
     public:
         
-        video_anim(Uint N = 50000, FP angle_red = 0.005, FP rad_red = 0.5)
+        video_anim(Uint N = 50000, FP angle_red = 0.005, FP rad_red = 1.0)
             : N_(N), a_red_(angle_red), r_red_(rad_red)
         {
         }
@@ -67,7 +67,7 @@ namespace eg
             static constexpr FP a_inc = 0.005;
             static constexpr FP a_dec = -a_inc;
             FP ac = 0.0;
-            static constexpr FP aj = 1.0 / 35.0;
+            static constexpr FP aj = 5.0 * a_inc; // 1.0 / 35.0;
 
             for (decltype(N_) i = 0; i < N_; ++i)
             {
@@ -81,7 +81,7 @@ namespace eg
                 if (r < 0) r = 0;
 
                 a += ac;
-                auto ar = r * aj;
+                auto ar = static_cast<int>(r) * aj;
 
                 particles_.emplace_back(particle{.r = r, .a = a + ar});
             }
