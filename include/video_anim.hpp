@@ -25,7 +25,7 @@ namespace eg
 
     public:
         
-        video_anim(Uint N = 50000, FP angle_red = 0.005, FP rad_red = 1.0)
+        video_anim(Uint N = 50000, FP angle_red = 0.005, FP rad_red = 0.5)
             : N_(N), a_red_(angle_red), r_red_(rad_red)
         {
         }
@@ -49,30 +49,25 @@ namespace eg
             SDL_FillRect(surface, NULL, 0);
             
             particles_.reserve(N_);
-            auto AN = static_cast<int>(surface->w / 0.005);
+            auto AN = static_cast<size_t>(surface->w / 0.005) + 1;
             sine_.reserve(AN);
             cosine_.reserve(AN);
-            std::cout << "AN: " << AN << '\n';
-            std::cout << "capacity: " << sine_.capacity() << '\n';
-            std::cout << "size: " << sine_.size() << '\n';
             for (auto i = 0.0, inc = 2.0 * M_PI / AN; i < 2 * M_PI; i += inc)
             {
                 cosine_.emplace_back(SDL_cos(i));
                 sine_.emplace_back(SDL_sin(i));
             }
-            std::cout << "capacity: " << sine_.capacity() << '\n';
-            std::cout << "size: " << sine_.size() << '\n';
 
             FP r = 0.0;
             static constexpr FP r_inc = 0.5;
             static constexpr FP r_dec = -r_inc * 0.991;
             FP rc = 0.0;
 
-            int a = 0;
-            static constexpr int a_inc = 1; // 0.005;
-            static constexpr int a_dec = -1; //-a_inc;
-            int ac = a;
-            static constexpr int aj = 5; // 5.0 * a_inc; // 1.0 / 35.0;
+            FP a = 0.0;
+            static constexpr FP a_inc = 0.005;
+            static constexpr FP a_dec = -a_inc;
+            FP ac = 0.0;
+            static constexpr FP aj = 4.0 * a_inc; // 1.0 / 35.0;
 
             for (decltype(N_) i = 0; i < N_; ++i)
             {
@@ -86,11 +81,9 @@ namespace eg
                 if (r < 0) r = 0;
 
                 a += ac;
-                if (a < 0) a = 0;
-                a %= AN;
-                auto ar = static_cast<int>(r) * aj;
+                auto ar = r * aj;
 
-                particles_.emplace_back(particle{.r = r, .a = (a + ar) % AN});
+                particles_.emplace_back(particle{.r = r, .a = a + ar});
             }
 
         }
@@ -124,11 +117,7 @@ namespace eg
 
             for (auto &p : particles_)
             {
-                // std::cout << p.a << "\n";
-                auto x = static_cast<int>(cosine_.at(p.a) * p.r);
-                auto y = static_cast<int>(sine_.at(p.a) * p.r);
-
-                auto data = (center + x) + (surface->w * y);
+                auto data = (center + p.x()) + (surface->w * p.y());
                 if (data >= pixels and data < bound) *data = 0;
             }
 
@@ -136,14 +125,10 @@ namespace eg
             {
 
                 p.a -= a_red_;
-                if (p.a < 0) p.a = cosine_.size() - 1;
-
                 p.r -= r_red_;
                 if (p.r < 0) p.r = mr;
 
-                auto x = static_cast<int>(cosine_.at(p.a) * p.r);
-                auto y = static_cast<int>(sine_.at(p.a) * p.r);
-                auto data = (center + x) + (surface->w * y);
+                auto data = (center + p.x()) + (surface->w * p.y());
                 if (data >= pixels and data < bound) *data = pal_.at(static_cast<int>(p.r));
             }
         }
