@@ -49,14 +49,19 @@ namespace eg
             SDL_FillRect(surface, NULL, 0);
             
             particles_.reserve(N_);
-            auto AN = static_cast<int>(surface->w / 0.005) + 1;
+            auto AN = static_cast<int>(surface->w / 0.005);
             sine_.reserve(AN);
             cosine_.reserve(AN);
+            std::cout << "AN: " << AN << '\n';
+            std::cout << "capacity: " << sine_.capacity() << '\n';
+            std::cout << "size: " << sine_.size() << '\n';
             for (auto i = 0.0, inc = 2.0 * M_PI / AN; i < 2 * M_PI; i += inc)
             {
                 cosine_.emplace_back(SDL_cos(i));
                 sine_.emplace_back(SDL_sin(i));
             }
+            std::cout << "capacity: " << sine_.capacity() << '\n';
+            std::cout << "size: " << sine_.size() << '\n';
 
             FP r = 0.0;
             static constexpr FP r_inc = 0.5;
@@ -81,6 +86,8 @@ namespace eg
                 if (r < 0) r = 0;
 
                 a += ac;
+                if (a < 0) a = 0;
+                a %= AN;
                 auto ar = static_cast<int>(r) * aj;
 
                 particles_.emplace_back(particle{.r = r, .a = (a + ar) % AN});
@@ -117,6 +124,7 @@ namespace eg
 
             for (auto &p : particles_)
             {
+                // std::cout << p.a << "\n";
                 auto x = static_cast<int>(cosine_.at(p.a) * p.r);
                 auto y = static_cast<int>(sine_.at(p.a) * p.r);
 
@@ -129,7 +137,7 @@ namespace eg
 
                 p.a -= a_red_;
                 if (p.a < 0) p.a = cosine_.size() - 1;
-                
+
                 p.r -= r_red_;
                 if (p.r < 0) p.r = mr;
 
