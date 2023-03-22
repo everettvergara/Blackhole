@@ -21,6 +21,8 @@ namespace eg
         Uint N_;
         FP a_red_, r_red_;
 
+        std::vector<FP> sine_, cosine_;
+
     public:
         
         video_anim(Uint N = 50000, FP angle_red = 0.005, FP rad_red = 0.5)
@@ -42,9 +44,20 @@ namespace eg
                                                             {surface->w, SDL_MapRGBA(surface->format, 0, 0, 0, 0)},
                                                         }).value();
 
+
+
             SDL_FillRect(surface, NULL, 0);
             
             particles_.reserve(N_);
+            auto AN = static_cast<size_t>(surface->w / 0.005) + 1;
+            sine_.reserve(AN);
+            cosine_.reserve(AN);
+            for (auto i = 0.0, inc = 2.0 * M_PI / AN; i < 2 * M_PI; i += inc)
+            {
+                sine_.emplace_back(SDL_sin(i));
+                cosine_.emplace_back(SDL_sin(i));
+            }
+
 
             FP r = 0.0;
             static constexpr FP r_inc = 0.5;

@@ -6,7 +6,7 @@
 namespace eg
 {
 
-    constexpr int   FPS_    = 120;
+    constexpr int   FPS_    = 60;
     constexpr int   MSPF_   = 1000 / FPS_;
 
     class video
