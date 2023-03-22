@@ -54,10 +54,9 @@ namespace eg
             cosine_.reserve(AN);
             for (auto i = 0.0, inc = 2.0 * M_PI / AN; i < 2 * M_PI; i += inc)
             {
+                cosine_.emplace_back(SDL_cos(i));
                 sine_.emplace_back(SDL_sin(i));
-                cosine_.emplace_back(SDL_sin(i));
             }
-
 
             FP r = 0.0;
             static constexpr FP r_inc = 0.5;
