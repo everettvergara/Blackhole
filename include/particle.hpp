@@ -7,7 +7,8 @@ namespace eg
 {
     struct particle
     {
-        FP r, a;
+        FP r;
+        int a;
 
         inline auto x() -> Sint
         {

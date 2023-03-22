@@ -49,7 +49,7 @@ namespace eg
             SDL_FillRect(surface, NULL, 0);
             
             particles_.reserve(N_);
-            auto AN = static_cast<size_t>(surface->w / 0.005) + 1;
+            auto AN = static_cast<int>(surface->w / 0.005) + 1;
             sine_.reserve(AN);
             cosine_.reserve(AN);
             for (auto i = 0.0, inc = 2.0 * M_PI / AN; i < 2 * M_PI; i += inc)
@@ -63,11 +63,11 @@ namespace eg
             static constexpr FP r_dec = -r_inc * 0.991;
             FP rc = 0.0;
 
-            FP a = 0.0;
-            static constexpr FP a_inc = 0.005;
-            static constexpr FP a_dec = -a_inc;
-            FP ac = 0.0;
-            static constexpr FP aj = 5.0 * a_inc; // 1.0 / 35.0;
+            int a = 0;
+            static constexpr int a_inc = 1; // 0.005;
+            static constexpr int a_dec = -1; //-a_inc;
+            int ac = a;
+            static constexpr int aj = 5; // 5.0 * a_inc; // 1.0 / 35.0;
 
             for (decltype(N_) i = 0; i < N_; ++i)
             {
@@ -83,7 +83,7 @@ namespace eg
                 a += ac;
                 auto ar = static_cast<int>(r) * aj;
 
-                particles_.emplace_back(particle{.r = r, .a = a + ar});
+                particles_.emplace_back(particle{.r = r, .a = (a + ar) % AN});
             }
 
         }
@@ -117,7 +117,10 @@ namespace eg
 
             for (auto &p : particles_)
             {
-                auto data = (center + p.x()) + (surface->w * p.y());
+                auto x = static_cast<int>(cosine_.at(p.a) * p.r);
+                auto y = static_cast<int>(sine_.at(p.a) * p.r);
+
+                auto data = (center + x) + (surface->w * y);
                 if (data >= pixels and data < bound) *data = 0;
             }
 
@@ -125,10 +128,14 @@ namespace eg
             {
 
                 p.a -= a_red_;
+                if (p.a < 0) p.a = cosine_.size() - 1;
+                
                 p.r -= r_red_;
                 if (p.r < 0) p.r = mr;
 
-                auto data = (center + p.x()) + (surface->w * p.y());
+                auto x = static_cast<int>(cosine_.at(p.a) * p.r);
+                auto y = static_cast<int>(sine_.at(p.a) * p.r);
+                auto data = (center + x) + (surface->w * y);
                 if (data >= pixels and data < bound) *data = pal_.at(static_cast<int>(p.r));
             }
         }
