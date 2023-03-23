@@ -2,7 +2,7 @@
 
 #include <stdexcept>
 #include <SDL.h>
-#include <SDL_ttf.h>
+// #include <SDL_ttf.h>
 
 namespace eg
 {
@@ -17,14 +17,14 @@ namespace eg
         SDL_Quit();
     }
 
-    auto font_init()
-    {
-        if (auto t = TTF_Init(); t == -1)
-            throw std::runtime_error("Could not init TTF Font!");
-    }
+    // auto font_init()
+    // {
+    //     if (auto t = TTF_Init(); t == -1)
+    //         throw std::runtime_error("Could not init TTF Font!");
+    // }
 
-    auto font_quit()
-    {
-        TTF_Quit();
-    }
+    // auto font_quit()
+    // {
+    //     TTF_Quit();
+    // }
 }
