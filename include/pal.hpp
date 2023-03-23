@@ -5,7 +5,7 @@
 #include <initializer_list>
 #include <tuple>
 #include <optional>
-#include <SDL.h>
+#include "SDL2/SDL.h"
 #include "common.hpp"
 
 namespace eg {

@@ -1,7 +1,7 @@
 #pragma once
 
 #include <stdexcept>
-#include <SDL.h>
+#include "SDL2/SDL.h"
 // #include <SDL_ttf.h>
 
 namespace eg
