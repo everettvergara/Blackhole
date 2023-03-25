@@ -28,6 +28,7 @@ namespace eg {
         Uint8 r1, g1, b1, a1;
         Uint8 r2, g2, b2, a2;            
         SDL_GetRGBA(rgba_color_from, format, &r1, &g1, &b1, &a1);
+        // std::cout << "here!" << (int)r1 << ", " << (int)g1 << ", " << (int)b1 << ", " << (int)a1 << "\n";
 
         while(++t != rgba_colors.end()) 
         {

@@ -44,16 +44,33 @@ namespace eg
             //                                                 {surface->w, SDL_MapRGBA(surface->format, 0, 0, 0, 0)},
             //                                             }).value();
 
-            pal_ = get_palette_gradient(surface->format, {  {0, SDL_MapRGBA(surface->format, 255, 255, 255, 255)},
-                                                            {50, SDL_MapRGBA(surface->format, 123, 207, 224, 255)},
-                                                            {100, SDL_MapRGBA(surface->format, 28, 152, 71, 255)},
-                                                            {150, SDL_MapRGBA(surface->format, 34, 49, 15, 255)},
-                                                            {200, SDL_MapRGBA(surface->format, 94, 66, 15, 255)},
-                                                            {surface->h, SDL_MapRGBA(surface->format, 206, 109, 29, 255)},
+            pal_ = get_palette_gradient(surface->format, {  {0, SDL_MapRGBA(surface->format, 0, 0, 255, 255)},
+                                                            // {100, SDL_MapRGBA(surface->format, 123, 207, 224, 255)},
+                                                            // {200, SDL_MapRGBA(surface->format, 28, 71, 152, 255)},
+                                                            // {300, SDL_MapRGBA(surface->format, 255, 15, 200, 255)},
+                                                            // // {400, SDL_MapRGBA(surface->format, 94, 15, 66, 255)},
+                                                            {surface->h, SDL_MapRGBA(surface->format, 206, 29, 109, 255)},
                                                             {surface->w, SDL_MapRGBA(surface->format, 0, 0, 0, 0)},
                                                         }).value();
+            {
+                Uint8 r1 = 0, g1 = 0, b1 = 0, a1 = 0;
+            auto rgba = SDL_MapRGBA(surface->format, 0, 0, 255, 255);
+            SDL_GetRGBA(rgba, surface->format, &r1, &g1, &b1, &a1);
+            std::cout << "hello!" << rgba << " " << (int)r1 << ", " << (int)g1 << ", " << (int)b1 << ", " << (int)a1 << "\n";
+            }
 
+            // std::cout << surface->h << "\n";
             SDL_FillRect(surface, NULL, 0);
+            
+            // for (int i = 0; i < pal_.size(); ++i)
+            // {
+            //     Uint8 r, g, b, a;
+
+            //     SDL_GetRGBA(pal_.at(i), surface->format, &r, &g, &b, &a);
+
+            //     std::cout << "i: " << i << " " << (int) r << ", " << (int) g << ", " << (int) b << ", " << (int)a << "\n";
+
+            // }
             
             particles_.reserve(N_);
             auto AN = static_cast<size_t>(surface->w / 0.005);
