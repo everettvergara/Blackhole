@@ -54,9 +54,9 @@ namespace eg
                                                         }).value();
             {
                 Uint8 r1 = 0, g1 = 0, b1 = 0, a1 = 0;
-            auto rgba = SDL_MapRGBA(surface->format, 0, 0, 255, 255);
-            SDL_GetRGBA(rgba, surface->format, &r1, &g1, &b1, &a1);
-            std::cout << "hello!" << rgba << " " << (int)r1 << ", " << (int)g1 << ", " << (int)b1 << ", " << (int)a1 << "\n";
+                auto rgba = SDL_MapRGBA(surface->format, 0, 0, 255, 255);
+                SDL_GetRGBA(rgba, surface->format, &r1, &g1, &b1, &a1);
+                std::cout << "hello!" << rgba << " " << (int)r1 << ", " << (int)g1 << ", " << (int)b1 << ", " << (int)a1 << "\n";
             }
 
             // std::cout << surface->h << "\n";
