@@ -35,16 +35,23 @@ namespace eg
         auto init() -> void override
         {
             auto surface = SDL_GetWindowSurface(win_);
+            // pal_ = get_palette_gradient(surface->format, {  {0, SDL_MapRGBA(surface->format, 255, 255, 255, 255)},
+            //                                                 {50, SDL_MapRGBA(surface->format, 123, 207, 224, 255)},
+            //                                                 {100, SDL_MapRGBA(surface->format, 28, 71, 152, 255)},
+            //                                                 {150, SDL_MapRGBA(surface->format, 34, 15, 49, 255)},
+            //                                                 {200, SDL_MapRGBA(surface->format, 94, 15, 66, 255)},
+            //                                                 {surface->h, SDL_MapRGBA(surface->format, 206, 29, 109, 255)},
+            //                                                 {surface->w, SDL_MapRGBA(surface->format, 0, 0, 0, 0)},
+            //                                             }).value();
+
             pal_ = get_palette_gradient(surface->format, {  {0, SDL_MapRGBA(surface->format, 255, 255, 255, 255)},
                                                             {50, SDL_MapRGBA(surface->format, 123, 207, 224, 255)},
-                                                            {100, SDL_MapRGBA(surface->format, 28, 71, 152, 255)},
-                                                            {150, SDL_MapRGBA(surface->format, 34, 15, 49, 255)},
-                                                            {200, SDL_MapRGBA(surface->format, 94, 15, 66, 255)},
-                                                            {surface->h, SDL_MapRGBA(surface->format, 206, 29, 109, 255)},
+                                                            {100, SDL_MapRGBA(surface->format, 28, 152, 71, 255)},
+                                                            {150, SDL_MapRGBA(surface->format, 34, 49, 15, 255)},
+                                                            {200, SDL_MapRGBA(surface->format, 94, 66, 15, 255)},
+                                                            {surface->h, SDL_MapRGBA(surface->format, 206, 109, 29, 255)},
                                                             {surface->w, SDL_MapRGBA(surface->format, 0, 0, 0, 0)},
                                                         }).value();
-
-
 
             SDL_FillRect(surface, NULL, 0);
             
